@@ -1,0 +1,154 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box; /*定义了 user agent 应该如何计算一个元素的总宽度和总高度*/
+	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
+}
+
+body{
+	display: flex; /*弹性布局*/
+	justify-content: center; /*在容器中央对齐弹性项目*/
+	align-items: center; /*将弹性 <div> 元素的所有项目的居中对齐：*/
+	min-height: 100vh; 
+	/*设置元素的最小高度 vh: 相对于视窗的高度, 视窗被均分为100单位的vh; vw: 相对于视窗的宽度, 视窗被均分为100单位的vw*/
+	background: radial-gradient(red, #FF3333); /*带有均匀间隔色标的径向渐变*/
+	flex-wrap: wrap; /*定义项目是否换行以及如何换行 换行，第一行在上方*/
+}
+
+.card{
+	position: relative; /*相对定位*/
+	width: 600px;
+	height: 350px;
+	border-radius: 20px; /*元素4个角的圆角半径都是20px*/
+	display: flex;
+	align-items: center; /*定义项目在竖直方向上对齐方式 交叉轴的中点对齐*/
+	transition: 0.5s; /*现在实现页面效果很有用的属性 把鼠标指针放到 div 元素上，其宽度和高度会从逐渐变为 600px/350px*/
+}
+
+.card .circle{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden; /*将circle溢出的部分隐藏*/
+}
+
+/*::before 创建一个伪元素，其将成为匹配选中的元素的第一个子元素。常通过 content 属性来为一个元素添加修饰性的内容。此元素默认为行内元素*/
+.card .circle::before{
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #FFFAFA;
+	/*clip-path CSS 属性使用裁剪方式创建元素的可显示区域。区域内的部分显示，区域外的隐藏*/
+	clip-path: circle(120px at center); /*切割路径 从中间开始切割 使用一个半径 120px 和一个圆心位置 center */
+	border-radius: 20px;
+	transition: 0.5s;
+}
+
+.card:hover .circle::before{
+	clip-path: circle(400px at center);
+	background:#F1E8DB;
+}
+
+.card img{
+	position: absolute;
+	top: -40%;
+	left: 50%;
+	/*transform属性允许你旋转，缩放，倾斜或平移给定元素。这是通过修改 CSS 视觉格式化模型的坐标空间来实现的
+	只能转换由盒模型定位的元素。根据经验，如果元素具有display: block，则由盒模型定位元素。*/
+	transform: translate(-50%, 50%); /*水平垂直居中*/
+	/*
+	trasform:translate(-50%,-50%)除了可以水平垂直居中，还可以根据屏幕的大小来调节自身的宽度，做弹框时不用设置宽高，缺点是有的浏览器不支持
+	*/
+	height: 300px;
+	pointer-events: none; /*pointer-events: none 去掉鼠标事件 pointer-events: auto 恢复鼠标事件*/
+	/*值得一提的是，仅仅是鼠标事件失效，用 tab 键还是可以选中该链接的，然后 enter 打开，这个时候可以去掉 a 标签的 href 属性，就不能让 tab 键选中了，不局限于a链接，其它元素的鼠标事件（例如，div,p等）也可以去除*/
+	transition: 0.5s;
+}
+
+.card:hover img{
+	left: 95%;
+	height: 600px;
+}
+
+.card .content{
+	position: relative;
+	width: 70%;
+	padding: 20px 20px 20px 40px;
+	transition: 0.5s;
+	pointer-events: none;
+	opacity: 0;
+	visibility: hidden;
+}
+
+.card:hover .content{
+	left: 0;
+	opacity: 100%;
+	visibility: visible;
+}
+
+.card .content h2{
+	color: black;
+	font-size: 3em;
+	line-height: 2em;
+	margin-bottom: 5px;
+}
+
+.card .content p{
+	color: black;
+	font-size: 1.5em;
+}
+
+.card .content{
+	position: relative;
+	color: black;
+	padding: 10px 10px 10px 20px;
+	border-radius: 10px;
+	text-decoration: none;
+	margin-top: 10px;
+	display: inline-block; /*display：inline-block 在元素之后不添加换行符，因此该元素可以位于其他元素旁边*/
+	font-weight: 700;
+	/*cursor: pointer;*/
+}
+
+.card:nth-child(2):hover .circle::before{
+	clip-path: circle(400px at center);
+	background: #E9D8AC;
+}
+
+/*媒体查询*/
+/*当页面宽度小于991px改变card*/
+@media (max-width: 991px){
+	.card{
+		width: auto;
+		max-width: 350px;
+		align-items: flex-start;
+		margin: 13px;
+	}
+	.card:hover{
+		height: 600px;
+	}
+	.card .content{
+		width: 100%;
+		left: 0;
+		padding: 30px;
+	}
+	.card:hover img{
+		top: 70%;
+		left: 50%;
+		height: 300px;
+	}
+}
+
+@media (max-width: 420px){
+	.card .content{
+		padding: 20px;
+	}
+}
